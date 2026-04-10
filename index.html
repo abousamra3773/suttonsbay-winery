@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Suttons Bay Cellars</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #faf7f2;
+      --dark: #1a1208;
+      --wine: #6b1a2a;
+      --gold: #c9963a;
+      --text: #3d2b1f;
+      --muted: #8a7060;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", Georgia, serif;
+      background: var(--cream);
+      color: var(--text);
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.25rem 3rem;
+      background: rgba(250,247,242,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(201,150,58,0.2);
+    }
+    .nav-logo {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: var(--wine);
+    }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 13px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--wine); }
+
+    /* ── HERO ──
+       NOTE: srcset here tells the browser:
+       - Load images/hero.jpg on standard screens (1x)
+       - Load images/hero@2x.jpg on retina screens (2x)
+       The browser AUTOMATICALLY picks the right one!
+    */
+    .hero {
+      position: relative;
+      height: 100vh;
+      min-height: 600px;
+      overflow: hidden;
+    }
+    .hero-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 60%;
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom,
+        rgba(26,18,8,0.3) 0%,
+        rgba(26,18,8,0.1) 40%,
+        rgba(26,18,8,0.7) 100%);
+    }
+    .hero-content {
+      position: absolute;
+      bottom: 10%;
+      left: 0; right: 0;
+      text-align: center;
+      color: white;
+      padding: 0 2rem;
+    }
+    .hero-eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+    .hero-title {
+      font-size: clamp(40px, 7vw, 80px);
+      font-weight: 300;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+    }
+    .hero-subtitle {
+      font-size: 18px;
+      font-weight: 300;
+      color: rgba(255,255,255,0.85);
+      margin-bottom: 2rem;
+    }
+    .btn-gold {
+      display: inline-block;
+      padding: 14px 32px;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      font-size: 12px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+    .btn-gold:hover {
+      background: var(--gold);
+      color: var(--dark);
+    }
+
+    /* ── INTRO ── */
+    .intro {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 6rem 2rem;
+      text-align: center;
+    }
+    .section-eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.25rem;
+    }
+    .intro h2 {
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 300;
+      line-height: 1.3;
+      margin-bottom: 1.5rem;
+      color: var(--dark);
+    }
+    .intro p {
+      font-size: 17px;
+      line-height: 1.8;
+      color: var(--muted);
+    }
+
+    /* ── FEATURE — split layout ──
+       object-fit: cover fills the container without distorting
+       object-position controls which part of the image stays centered
+    */
+    .feature {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 600px;
+    }
+    .feature.reverse { direction: rtl; }
+    .feature.reverse > * { direction: ltr; }
+    .feature-img-wrap { overflow: hidden; }
+    .feature-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+    .feature-img-wrap:hover .feature-img {
+      transform: scale(1.03);
+    }
+    .feature-text {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 4rem;
+      background: var(--cream);
+    }
+    .feature-text h2 {
+      font-size: clamp(24px, 3vw, 38px);
+      font-weight: 300;
+      margin-bottom: 1.25rem;
+      color: var(--dark);
+      line-height: 1.3;
+    }
+    .feature-text p {
+      font-size: 16px;
+      line-height: 1.9;
+      color: var(--muted);
+      margin-bottom: 2rem;
+    }
+
+    /* ── WINES ── */
+    .wines {
+      background: var(--dark);
+      padding: 6rem 2rem;
+      text-align: center;
+    }
+    .wines .section-eyebrow { color: var(--gold); }
+    .wines h2 {
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 300;
+      color: white;
+      margin-bottom: 0.75rem;
+    }
+    .wines-subtitle {
+      font-size: 16px;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 3rem;
+    }
+    .wines-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .wine-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(201,150,58,0.2);
+      border-radius: 4px;
+      overflow: hidden;
+      text-align: left;
+      transition: transform 0.3s, border-color 0.3s;
+    }
+    .wine-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(201,150,58,0.5);
+    }
+
+    /*
+      WINE CARD IMAGES — object-fit: cover with explicit height
+      The srcset tells browser: load .jpg at 1x, @2x.jpg at retina
+    */
+    .wine-card-img {
+      width: 100%;
+      height: 260px;
+      object-fit: cover;
+    }
+    .wine-card-body { padding: 1.5rem; }
+    .wine-card-type {
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.5rem;
+    }
+    .wine-card-name {
+      font-size: 20px;
+      font-weight: 400;
+      color: white;
+      margin-bottom: 0.5rem;
+    }
+    .wine-card-desc {
+      font-size: 13px;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.7;
+      margin-bottom: 1rem;
+    }
+    .wine-card-price {
+      font-size: 15px;
+      color: var(--gold);
+    }
+
+    /* ── TASTING ── */
+    .tasting {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 500px;
+    }
+    .tasting-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .tasting-text {
+      background: #f0ebe2;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 4rem;
+    }
+    .tasting-text h2 {
+      font-size: clamp(24px, 3vw, 36px);
+      font-weight: 300;
+      color: var(--dark);
+      margin-bottom: 1.25rem;
+      line-height: 1.3;
+    }
+    .tasting-text p {
+      font-size: 15px;
+      line-height: 1.9;
+      color: var(--muted);
+      margin-bottom: 2rem;
+    }
+    .tasting-details {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+    }
+    .tasting-detail {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid rgba(139,112,96,0.2);
+      color: var(--text);
+    }
+    .tasting-detail span:last-child { color: var(--muted); }
+    .btn-wine {
+      display: inline-block;
+      padding: 14px 32px;
+      background: var(--wine);
+      color: white;
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background 0.3s;
+      align-self: flex-start;
+    }
+    .btn-wine:hover { background: #8a2235; }
+
+    /* ── CELLAR SECTION ──
+       CSS background-image retina technique:
+       Standard screens get cellar.jpg
+       Retina screens get cellar@2x.jpg via media query
+    */
+    .cellar-section {
+      position: relative;
+      height: 500px;
+      overflow: hidden;
+
+      /* Standard 1x background */
+      background-image: url('images/cellar.jpg');
+      background-size: cover;
+      background-position: center;
+    }
+
+    /* Retina media query — loads @2x for high density screens */
+    @media (-webkit-min-device-pixel-ratio: 2),
+           (min-resolution: 192dpi) {
+      .cellar-section {
+        background-image: url('images/cellar@2x.jpg');
+      }
+    }
+
+    .cellar-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(26,18,8,0.65);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .cellar-content { color: white; padding: 2rem; }
+    .cellar-content h2 {
+      font-size: clamp(28px, 5vw, 56px);
+      font-weight: 300;
+      margin-bottom: 1rem;
+    }
+    .cellar-content p {
+      font-size: 17px;
+      color: rgba(255,255,255,0.75);
+      max-width: 500px;
+      margin: 0 auto 2rem;
+      line-height: 1.7;
+    }
+
+    /* ── VISIT ── */
+    .visit {
+      padding: 6rem 2rem;
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .visit h2 {
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 300;
+      color: var(--dark);
+      margin-bottom: 1rem;
+    }
+    .visit > p {
+      font-size: 16px;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 2.5rem;
+    }
+    .visit-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+    .visit-item h3 {
+      font-size: 13px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--wine);
+      margin-bottom: 0.5rem;
+    }
+    .visit-item p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--dark);
+      color: rgba(255,255,255,0.5);
+      text-align: center;
+      padding: 3rem 2rem;
+      font-size: 13px;
+    }
+    .footer-logo {
+      font-size: 22px;
+      color: var(--gold);
+      margin-bottom: 1rem;
+      font-weight: 400;
+    }
+    footer p { line-height: 1.8; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .feature { grid-template-columns: 1fr; }
+      .feature.reverse { direction: ltr; }
+      .feature-img-wrap { height: 300px; }
+      .feature-text { padding: 2.5rem 1.5rem; }
+      .tasting { grid-template-columns: 1fr; }
+      .tasting-img { height: 300px; width: 100%; }
+      .tasting-text { padding: 2.5rem 1.5rem; }
+      .visit-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">Suttons Bay Cellars</div>
+    <ul class="nav-links">
+      <li><a href="#wines">Our Wines</a></li>
+      <li><a href="#tasting">Tasting Room</a></li>
+      <li><a href="#visit">Visit</a></li>
+    </ul>
+  </nav>
+
+  <!-- ═══════════════════════════════════════════════
+       HERO IMAGE — picture element + srcset
+       - Mobile: loads hero.jpg / hero@2x.jpg
+       - Desktop: same images, different focal point via CSS
+       - Browser picks 1x or 2x based on screen resolution
+  ════════════════════════════════════════════════ -->
+  <section class="hero">
+    <picture>
+      <!-- Mobile: tighter crop -->
+      <source
+        media="(max-width: 768px)"
+        srcset="images/hero.jpg 1x,
+                images/hero@2x.jpg 2x"
+      >
+      <!-- Desktop: full wide shot -->
+      <source
+        media="(min-width: 769px)"
+        srcset="images/hero.jpg 1x,
+                images/hero@2x.jpg 2x"
+      >
+      <!-- Fallback img — always required -->
+      <img
+        class="hero-img"
+        src="images/hero.jpg"
+        alt="Suttons Bay Cellars vineyard at golden hour"
+        width="900"
+        height="598"
+        loading="eager"
+      >
+    </picture>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <p class="hero-eyebrow">Est. 1987 — Suttons Bay, Michigan</p>
+      <h1 class="hero-title">Where the Lake<br>Meets the Vine</h1>
+      <p class="hero-subtitle">Hand-crafted wines from the shores of Grand Traverse Bay</p>
+      <a href="#wines" class="btn-gold">Explore Our Wines</a>
+    </div>
+  </section>
+
+  <!-- INTRO -->
+  <section class="intro">
+    <p class="section-eyebrow">Our Story</p>
+    <h2>Four decades of passion, one perfect terroir</h2>
+    <p>Nestled along the western shore of Michigan's Leelanau Peninsula, Suttons Bay Cellars has been crafting exceptional wines since 1987. Our vineyards benefit from the moderating influence of Grand Traverse Bay, producing wines of remarkable character and depth.</p>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       FEATURE IMAGE — srcset @1x and @2x
+       object-fit: cover fills the column without distorting
+       Hover effect zooms image via CSS transform
+  ════════════════════════════════════════════════ -->
+  <section class="feature">
+    <div class="feature-img-wrap">
+      <img
+        class="feature-img"
+        src="images/pour.jpg"
+        srcset="images/pour.jpg    1x,
+                images/pour@2x.jpg 2x"
+        alt="Pouring a glass of Suttons Bay Cellars red wine"
+        width="534"
+        height="800"
+        loading="lazy"
+      >
+    </div>
+    <div class="feature-text">
+      <p class="section-eyebrow">Philosophy</p>
+      <h2>Grown with intention. Crafted with care.</h2>
+      <p>Every bottle from Suttons Bay Cellars begins in our estate vineyards, where our team tends the vines by hand through Michigan's distinct seasons. We believe that exceptional wine is made in the vineyard long before it reaches the cellar.</p>
+      <p>Our winemaking philosophy is simple: intervene as little as possible, and let the character of our unique terroir speak for itself.</p>
+      <a href="#wines" class="btn-gold">View Our Wines</a>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       FEATURE REVERSED — bottle shot
+       srcset with @2x for retina sharpness on product image
+       object-fit: cover — fills column, crops if needed
+  ════════════════════════════════════════════════ -->
+  <section class="feature reverse">
+    <div class="feature-img-wrap">
+      <img
+        class="feature-img"
+        src="images/bottle.jpg"
+        srcset="images/bottle.jpg    1x,
+                images/bottle@2x.jpg 2x"
+        alt="Suttons Bay Cellars Chardonnay bottle"
+        width="500"
+        height="625"
+        loading="lazy"
+      >
+    </div>
+    <div class="feature-text">
+      <p class="section-eyebrow">Signature Wines</p>
+      <h2>Award-winning Chardonnay from the Leelanau Peninsula</h2>
+      <p>Our estate Chardonnay has become the hallmark of Suttons Bay Cellars. Fermented in French oak and aged sur lies for twelve months, it expresses the cool-climate elegance that makes Michigan wine country so special.</p>
+      <p>Notes of golden apple, toasted brioche, and a long mineral finish that speaks directly of the limestone soils beneath our vines.</p>
+      <a href="#tasting" class="btn-gold">Book a Tasting</a>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       WINE CARDS — srcset on each card image
+       object-fit: cover with fixed height keeps cards uniform
+       object-position controls focal point per image
+  ════════════════════════════════════════════════ -->
+  <section class="wines" id="wines">
+    <p class="section-eyebrow">Our Collection</p>
+    <h2>Current Releases</h2>
+    <p class="wines-subtitle">Small-batch wines crafted from estate and locally sourced grapes</p>
+
+    <div class="wines-grid">
+      <div class="wine-card">
+        <img
+          class="wine-card-img"
+          src="images/rose.jpg"
+          srcset="images/rose.jpg    1x,
+                  images/rose@2x.jpg 2x"
+          alt="Suttons Bay Cellars Rose"
+          width="533"
+          height="260"
+          loading="lazy"
+          style="object-position: center 30%;"
+        >
+        <div class="wine-card-body">
+          <p class="wine-card-type">Rose</p>
+          <h3 class="wine-card-name">Bayshore Rose 2024</h3>
+          <p class="wine-card-desc">Delicate salmon pink with notes of fresh strawberry, watermelon, and a crisp dry finish. Perfect for warm Michigan summers.</p>
+          <p class="wine-card-price">$28 / bottle</p>
+        </div>
+      </div>
+
+      <div class="wine-card">
+        <img
+          class="wine-card-img"
+          src="images/pour.jpg"
+          srcset="images/pour.jpg    1x,
+                  images/pour@2x.jpg 2x"
+          alt="Suttons Bay Cellars Red Blend"
+          width="534"
+          height="260"
+          loading="lazy"
+          style="object-position: center 20%;"
+        >
+        <div class="wine-card-body">
+          <p class="wine-card-type">Red Blend</p>
+          <h3 class="wine-card-name">Leelanau Reserve 2022</h3>
+          <p class="wine-card-desc">Bold and structured with dark cherry, cedar, and earthy undertones. Aged 18 months in French oak barrels.</p>
+          <p class="wine-card-price">$48 / bottle</p>
+        </div>
+      </div>
+
+      <div class="wine-card">
+        <img
+          class="wine-card-img"
+          src="images/bottle.jpg"
+          srcset="images/bottle.jpg    1x,
+                  images/bottle@2x.jpg 2x"
+          alt="Suttons Bay Cellars Chardonnay"
+          width="500"
+          height="260"
+          loading="lazy"
+          style="object-position: center 30%;"
+        >
+        <div class="wine-card-body">
+          <p class="wine-card-type">White</p>
+          <h3 class="wine-card-name">Estate Chardonnay 2023</h3>
+          <p class="wine-card-desc">Our flagship white. Golden apple, toasted brioche, and a long mineral finish. Fermented in French oak for 12 months.</p>
+          <p class="wine-card-price">$36 / bottle</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       TASTING ROOM — srcset on tasting image
+       loading="lazy" — browser only loads when scrolled into view
+       This is how Apple optimizes performance on long pages
+  ════════════════════════════════════════════════ -->
+  <section class="tasting" id="tasting">
+    <img
+      class="tasting-img"
+      src="images/tasting.jpg"
+      srcset="images/tasting.jpg    1x,
+              images/tasting@2x.jpg 2x"
+      alt="Wine and cheese tasting board in the vineyard"
+      width="337"
+      height="450"
+      loading="lazy"
+    >
+    <div class="tasting-text">
+      <p class="section-eyebrow">Tasting Room</p>
+      <h2>An experience worth savoring</h2>
+      <p>Join us in our tasting room overlooking the vineyard. Our knowledgeable staff will guide you through a curated flight of our current releases, paired with local artisan cheeses and accompaniments.</p>
+      <div class="tasting-details">
+        <div class="tasting-detail">
+          <span>Standard Flight</span>
+          <span>5 wines — $20 per person</span>
+        </div>
+        <div class="tasting-detail">
+          <span>Reserve Flight</span>
+          <span>4 wines — $35 per person</span>
+        </div>
+        <div class="tasting-detail">
+          <span>Private Tasting</span>
+          <span>By appointment</span>
+        </div>
+        <div class="tasting-detail">
+          <span>Hours</span>
+          <span>Daily 11am — 6pm</span>
+        </div>
+      </div>
+      <a href="#visit" class="btn-wine">Reserve a Tasting</a>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       CELLAR SECTION — CSS background retina technique
+       Standard screens: background-image: url('images/cellar.jpg')
+       Retina screens: background-image: url('images/cellar@2x.jpg')
+       This is controlled in the CSS above with @media query
+  ════════════════════════════════════════════════ -->
+  <section class="cellar-section">
+    <div class="cellar-overlay">
+      <div class="cellar-content">
+        <p class="section-eyebrow" style="color:var(--gold);margin-bottom:1rem;">Wine Club</p>
+        <h2>Join the Cellar Society</h2>
+        <p>Receive hand-selected wines delivered to your door each quarter, along with exclusive access to library releases and member events.</p>
+        <a href="#" class="btn-gold">Learn More</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- VISIT -->
+  <section class="visit" id="visit">
+    <p class="section-eyebrow">Plan Your Visit</p>
+    <h2>Find us in Suttons Bay</h2>
+    <p>Located in the heart of Michigan wine country, we are just minutes from the charming village of Suttons Bay on the Leelanau Peninsula. Open year-round with extended hours during summer and fall harvest season.</p>
+    <div class="visit-grid">
+      <div class="visit-item">
+        <h3>Address</h3>
+        <p>1234 Bay Shore Drive<br>Suttons Bay, MI 49682</p>
+      </div>
+      <div class="visit-item">
+        <h3>Hours</h3>
+        <p>Mon-Fri: 11am - 6pm<br>Sat-Sun: 10am - 7pm</p>
+      </div>
+      <div class="visit-item">
+        <h3>Contact</h3>
+        <p>(231) 555-0100<br>hello@suttonsbay.com</p>
+      </div>
+    </div>
+    <a href="#" class="btn-wine">Get Directions</a>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p class="footer-logo">Suttons Bay Cellars</p>
+    <p>1234 Bay Shore Drive, Suttons Bay, MI 49682<br>
+    Photos from Unsplash — free to use. This is a design portfolio mockup.</p>
+  </footer>
+
+</body>
+</html>

@@ -442,6 +442,58 @@
       .tasting-text { padding: 2.5rem 1.5rem; }
       .visit-grid { grid-template-columns: 1fr; gap: 1.5rem; }
     }
+
+    /* Hamburger button — hidden on desktop */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+}
+.hamburger span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--wine);
+  transition: all 0.3s;
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  .hamburger {
+    display: flex;
+  }
+  .nav-links {
+    display: none;
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background: var(--cream);
+    flex-direction: column;
+    padding: 1.5rem 2rem;
+    gap: 1.25rem;
+    border-bottom: 1px solid rgba(201,150,58,0.2);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  }
+  .nav-links.open {
+    display: flex;
+  }
+
+  /* Animate hamburger to X when open */
+  .hamburger.open span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+  .hamburger.open span:nth-child(2) {
+    opacity: 0;
+  }
+  .hamburger.open span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+}
   </style>
 </head>
 <body>
@@ -454,6 +506,11 @@
       <li><a href="#tasting">Tasting Room</a></li>
       <li><a href="#visit">Visit</a></li>
     </ul>
+  <button class="hamburger" id="hamburger" aria-label="Open menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
   </nav>
 
   <!-- ═══════════════════════════════════════════════
@@ -717,5 +774,23 @@
     Photos from Unsplash — free to use. This is a design portfolio mockup.</p>
   </footer>
 
+  <script>
+  const hamburger = document.getElementById('hamburger');
+  const navLinks = document.getElementById('nav-links');
+
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    navLinks.classList.toggle('open');
+  });
+
+  // Close menu when a link is clicked
+  navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      hamburger.classList.remove('open');
+      navLinks.classList.remove('open');
+    });
+  });
+</script>
+  
 </body>
 </html>

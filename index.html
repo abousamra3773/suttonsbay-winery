@@ -463,9 +463,12 @@
 
 /* Mobile styles */
 @media (max-width: 768px) {
+  nav { padding: 1rem 1.5rem; }
+  
   .hamburger {
     display: flex;
   }
+
   .nav-links {
     display: none;
     position: fixed;
@@ -478,20 +481,12 @@
     gap: 1.25rem;
     border-bottom: 1px solid rgba(201,150,58,0.2);
     box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-  }
-  .nav-links.open {
-    display: flex;
+    z-index: 99;
   }
 
-  /* Animate hamburger to X when open */
-  .hamburger.open span:nth-child(1) {
-    transform: translateY(7px) rotate(45deg);
-  }
-  .hamburger.open span:nth-child(2) {
-    opacity: 0;
-  }
-  .hamburger.open span:nth-child(3) {
-    transform: translateY(-7px) rotate(-45deg);
+  /* This overrides the display:none above */
+  .nav-links.open {
+    display: flex !important;
   }
 }
   </style>

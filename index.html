@@ -460,15 +460,10 @@
   background: var(--wine);
   transition: all 0.3s;
 }
-
-/* Mobile styles */
+/* ── RESPONSIVE ── */
 @media (max-width: 768px) {
   nav { padding: 1rem 1.5rem; }
-  
-  .hamburger {
-    display: flex;
-  }
-
+  .hamburger { display: flex; }
   .nav-links {
     display: none;
     position: fixed;
@@ -483,12 +478,17 @@
     box-shadow: 0 4px 20px rgba(0,0,0,0.1);
     z-index: 99;
   }
-
-  /* This overrides the display:none above */
-  .nav-links.open {
-    display: flex !important;
-  }
+  .nav-links.open { display: flex !important; }
+  .feature { grid-template-columns: 1fr; }
+  .feature.reverse { direction: ltr; }
+  .feature-img-wrap { height: 300px; }
+  .feature-text { padding: 2.5rem 1.5rem; }
+  .tasting { grid-template-columns: 1fr; }
+  .tasting-img { height: 300px; width: 100%; }
+  .tasting-text { padding: 2.5rem 1.5rem; }
+  .visit-grid { grid-template-columns: 1fr; gap: 1.5rem; }
 }
+
   </style>
 </head>
 <body>
